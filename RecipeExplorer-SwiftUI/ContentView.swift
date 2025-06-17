@@ -22,21 +22,23 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List(filteredRecipes) { recipe in
-                HStack(alignment: .center) {
-                    VStack(alignment: .center) {
-                        if let url = URL(string: recipe.photo_url_small) {
-                            AsyncImage(url: url) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                            } placeholder: {
-                                ProgressView()
+                NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
+                    HStack(alignment: .center) {
+                        VStack(alignment: .center) {
+                            if let url = URL(string: recipe.photo_url_small) {
+                                AsyncImage(url: url) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(height: 100)
                             }
-                            .frame(height: 100)
+                            Text(recipe.cuisine)
                         }
-                        Text(recipe.cuisine)
+                        Text(recipe.name)
                     }
-                    Text(recipe.name)
                 }
             }
             .searchable(text: $searchText, prompt: "Search by cuisine")
