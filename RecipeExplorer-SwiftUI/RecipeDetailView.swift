@@ -28,55 +28,84 @@ struct RecipeDetailView: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 20) {
+                // Hero Image
                 if let url = URL(string: recipe.photo_url_large) {
                     AsyncImage(url: url) { image in
                         image
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                     } placeholder: {
                         ProgressView()
                     }
                     .frame(height: 300)
-                }
-                Text(recipe.name)
-                    .font(.title)
-                Text(recipe.cuisine)
-                    .font(.headline)
-                
-                if let sourceUrl = recipe.source_url {
-                    Button(action: {
-                        showWebView = true
-                    }) {
-                        Text("View Recipe Source")
-                            .foregroundColor(.blue)
-                            .underline()
-                    }
-                    .sheet(isPresented: $showWebView) {
-                        if let url = URL(string: sourceUrl) {
-                            WebView(url: url)
-                        }
-                    }
+                    .clipped()
                 }
                 
-                if let youtubeUrl = recipe.youtube_url {
-                    Button(action: {
-                        showYouTubeView = true
-                    }) {
-                        Text("Watch on YouTube")
-                            .foregroundColor(.blue)
-                            .underline()
+                VStack(alignment: .leading, spacing: 16) {
+                    // Title and Cuisine
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(recipe.name)
+                            .font(.title)
+                            .fontWeight(.bold)
+                        
+                        Text(recipe.cuisine)
+                            .font(.title3)
+                            .foregroundColor(.secondary)
                     }
-                    .sheet(isPresented: $showYouTubeView) {
-                        if let url = URL(string: youtubeUrl) {
-                            WebView(url: url)
+                    .padding(.horizontal)
+                    
+                    Divider()
+                    
+                    // Action Buttons
+                    VStack(spacing: 12) {
+                        if let sourceUrl = recipe.source_url {
+                            Button(action: {
+                                showWebView = true
+                            }) {
+                                HStack {
+                                    Image(systemName: "doc.text")
+                                    Text("View Recipe Source")
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                            }
+                            .sheet(isPresented: $showWebView) {
+                                if let url = URL(string: sourceUrl) {
+                                    WebView(url: url)
+                                }
+                            }
+                        }
+                        
+                        if let youtubeUrl = recipe.youtube_url {
+                            Button(action: {
+                                showYouTubeView = true
+                            }) {
+                                HStack {
+                                    Image(systemName: "play.rectangle")
+                                    Text("Watch on YouTube")
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                            }
+                            .sheet(isPresented: $showYouTubeView) {
+                                if let url = URL(string: youtubeUrl) {
+                                    WebView(url: url)
+                                }
+                            }
                         }
                     }
+                    .padding(.horizontal)
                 }
-                Spacer()
             }
-            .padding()
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

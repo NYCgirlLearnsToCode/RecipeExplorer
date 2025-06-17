@@ -21,25 +21,18 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List(filteredRecipes) { recipe in
-                NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
-                    HStack(alignment: .center) {
-                        VStack(alignment: .center) {
-                            if let url = URL(string: recipe.photo_url_small) {
-                                AsyncImage(url: url) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .frame(height: 100)
-                            }
-                            Text(recipe.cuisine)
+            ScrollView {
+                LazyVGrid(columns: [
+                    GridItem(.flexible(), spacing: 16),
+                    GridItem(.flexible(), spacing: 16)
+                ], spacing: 16) {
+                    ForEach(filteredRecipes) { recipe in
+                        NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
+                            RecipeCard(recipe: recipe)
                         }
-                        Text(recipe.name)
                     }
                 }
+                .padding()
             }
             .searchable(text: $searchText, prompt: "Search by cuisine")
             .task {
@@ -52,6 +45,43 @@ struct ContentView: View {
             }
         }
         .navigationTitle("Recipe Explorer")
+    }
+}
+
+struct RecipeCard: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let url = URL(string: recipe.photo_url_small) {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(height: 150)
+                .clipped()
+                .cornerRadius(12)
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(recipe.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
+                
+                Text(recipe.cuisine)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal, 8)
+            .padding(.bottom, 8)
+        }
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(radius: 4)
     }
 }
 
