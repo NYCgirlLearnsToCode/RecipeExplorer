@@ -8,21 +8,35 @@
 import SwiftUI
 
 @MainActor
-
 class RecipeViewModel: ObservableObject {
+    @Published private(set) var recipes: [Recipe] = []
+    @Published private(set) var errorMessage: String?
+    @Published private(set) var isLoading = false
     
-    @Published var recipes: [Recipe] = []
-    @Published var errorMessage: String?
+    private let apiService: RecipeService
     
-    let apiService = RecipeService()
+    init(apiService: RecipeService = RecipeService()) {
+        self.apiService = apiService
+    }
     
     func getRecipes() async {
+        guard !isLoading else { return }
+        
+        isLoading = true
+        errorMessage = nil
+        
         do {
             let fetchedRecipes = try await apiService.loadRecipes()
             self.recipes = fetchedRecipes
-            print(fetchedRecipes)
         } catch {
             self.errorMessage = "Failed to load recipes: \(error.localizedDescription)"
         }
+        
+        isLoading = false
+    }
+    
+    func refreshRecipes() async {
+        await apiService.clearCache()
+        await getRecipes()
     }
 }
