@@ -20,7 +20,7 @@ struct ContentView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 LazyVGrid(columns: [
                     GridItem(.flexible(), spacing: 16),

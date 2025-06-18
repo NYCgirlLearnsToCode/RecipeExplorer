@@ -29,14 +29,9 @@ class RecipeViewModel: ObservableObject {
             let fetchedRecipes = try await apiService.loadRecipes()
             self.recipes = fetchedRecipes
         } catch {
-            self.errorMessage = "Failed to load recipes: \(error.localizedDescription)"
+            self.errorMessage = error.localizedDescription
         }
         
         isLoading = false
-    }
-    
-    func refreshRecipes() async {
-        await apiService.clearCache()
-        await getRecipes()
     }
 }
