@@ -7,7 +7,11 @@
 
 import Foundation
 
-actor RecipeService {
+protocol RecipeServiceProtocol: AnyObject, Sendable {
+    func loadRecipes() async throws -> [Recipe]
+}
+
+actor RecipeService: RecipeServiceProtocol {
     private var cache: [Recipe]?
     private let cacheKey = "cached_recipes"
     private let cacheExpirationInterval: TimeInterval = 3600 // 1 hour

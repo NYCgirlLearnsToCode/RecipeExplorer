@@ -13,9 +13,9 @@ class RecipeViewModel: ObservableObject {
     @Published private(set) var errorMessage: String?
     @Published private(set) var isLoading = false
     
-    private let apiService: RecipeService
+    private let apiService: RecipeServiceProtocol
     
-    init(apiService: RecipeService = RecipeService()) {
+    init(apiService: RecipeServiceProtocol = RecipeService()) {
         self.apiService = apiService
     }
     
