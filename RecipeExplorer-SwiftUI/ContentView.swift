@@ -34,6 +34,9 @@ struct ContentView: View {
                 }
                 .padding()
             }
+            .refreshable {
+                await viewModel.getRecipes()
+            }
             .searchable(text: $searchText, prompt: "Search by cuisine")
             .task {
                 await viewModel.getRecipes()
