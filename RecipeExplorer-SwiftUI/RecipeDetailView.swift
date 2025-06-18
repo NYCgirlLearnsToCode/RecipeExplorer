@@ -31,15 +31,10 @@ struct RecipeDetailView: View {
             VStack(alignment: .leading, spacing: 20) {
                 // Hero Image
                 if let url = URL(string: recipe.photo_url_large) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(height: 300)
-                    .clipped()
+                    CachedAsyncImage(url: url)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 300)
+                        .clipped()
                 }
                 
                 VStack(alignment: .leading, spacing: 16) {

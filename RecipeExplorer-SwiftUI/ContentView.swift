@@ -57,16 +57,11 @@ struct RecipeCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if let url = URL(string: recipe.photo_url_small) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(height: 150)
-                .clipped()
-                .cornerRadius(12)
+                CachedAsyncImage(url: url)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 150)
+                    .clipped()
+                    .cornerRadius(12)
             }
             
             VStack(alignment: .leading, spacing: 4) {
