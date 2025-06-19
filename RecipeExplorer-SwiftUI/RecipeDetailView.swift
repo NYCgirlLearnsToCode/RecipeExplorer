@@ -30,7 +30,7 @@ struct RecipeDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Hero Image
-                if let url = URL(string: recipe.photo_url_large) {
+                if let url = URL(string: recipe.photoUrlLarge) {
                     CachedAsyncImage(url: url)
                         .aspectRatio(contentMode: .fill)
                         .frame(height: 300)
@@ -54,7 +54,7 @@ struct RecipeDetailView: View {
                     
                     // Action Buttons
                     VStack(spacing: 12) {
-                        if let sourceUrl = recipe.source_url {
+                        if let sourceUrl = recipe.sourceUrl {
                             Button(action: {
                                 showWebView = true
                             }) {
@@ -75,7 +75,7 @@ struct RecipeDetailView: View {
                             }
                         }
                         
-                        if let youtubeUrl = recipe.youtube_url {
+                        if let youtubeUrl = recipe.youtubeUrl {
                             Button(action: {
                                 showYouTubeView = true
                             }) {
@@ -105,5 +105,5 @@ struct RecipeDetailView: View {
 }
 
 #Preview {
-    RecipeDetailView(recipe: Recipe(cuisine: "Italian", name: "Pasta", photo_url_large: "https://example.com/large.jpg", photo_url_small: "https://example.com/small.jpg", source_url: nil, uuid: "12345", youtube_url: nil))
+    RecipeDetailView(recipe: Recipe(cuisine: "Italian", name: "Pasta", photoUrlLarge: "https://example.com/large.jpg", photoUrlSmall: "https://example.com/small.jpg", sourceUrl: nil, uuid: "12345", youtubeUrl: nil))
 }
