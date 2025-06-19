@@ -18,8 +18,7 @@ class RecipeViewModel: ObservableObject {
     init(apiService: RecipeServiceProtocol = RecipeService()) {
         self.apiService = apiService
     }
-    
-    // TODO: need to handle errors
+
     func getRecipes() async {
         guard !isLoading else { return }
         

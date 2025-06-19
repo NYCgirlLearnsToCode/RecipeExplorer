@@ -22,17 +22,28 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVGrid(columns: [
-                    GridItem(.flexible(), spacing: 16),
-                    GridItem(.flexible(), spacing: 16)
-                ], spacing: 16) {
-                    ForEach(filteredRecipes) { recipe in
-                        NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
-                            RecipeCard(recipe: recipe)
+                if filteredRecipes.isEmpty {
+                    VStack {
+                        Spacer(minLength: 100)
+                        Text("No recipes available.")
+                            .font(.title3)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                } else {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible(), spacing: 16),
+                        GridItem(.flexible(), spacing: 16)
+                    ], spacing: 16) {
+                        ForEach(filteredRecipes) { recipe in
+                            NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
+                                RecipeCard(recipe: recipe)
+                            }
                         }
                     }
+                    .padding()
                 }
-                .padding()
             }
             .refreshable {
                 await viewModel.getRecipes()
